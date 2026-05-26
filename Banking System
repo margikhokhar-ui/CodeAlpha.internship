@@ -1,0 +1,136 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Transaction {
+public:
+    string type;
+    float amount;
+
+    Transaction(string t, float a) {
+        type = t;
+        amount = a;
+    }
+};
+
+class Account {
+private:
+    int accNo;
+    string name;
+    float balance;
+    vector<Transaction> history;
+
+public:
+    Account(int no, string n, float b) {
+        accNo = no;
+        name = n;
+        balance = b;
+    }
+
+    void deposit(float amount) {
+        balance += amount;
+        history.push_back(Transaction("Deposit", amount));
+        cout << "Deposit Successful!\n";
+    }
+
+    void withdraw(float amount) {
+        if(amount > balance) {
+            cout << "Insufficient Balance!\n";
+        }
+        else {
+            balance -= amount;
+            history.push_back(Transaction("Withdraw", amount));
+            cout << "Withdrawal Successful!\n";
+        }
+    }
+
+    void transfer(Account &receiver, float amount) {
+        if(amount > balance) {
+            cout << "Insufficient Balance!\n";
+        }
+        else {
+            balance -= amount;
+            receiver.balance += amount;
+
+            history.push_back(Transaction("Transfer Sent", amount));
+            receiver.history.push_back(Transaction("Transfer Received", amount));
+
+            cout << "Transfer Successful!\n";
+        }
+    }
+
+    void showDetails() {
+        cout << "\nAccount Number: " << accNo << endl;
+        cout << "Customer Name: " << name << endl;
+        cout << "Balance: " << balance << endl;
+    }
+
+    void showTransactions() {
+        cout << "\nTransaction History:\n";
+
+        for(auto t : history) {
+            cout << t.type << " : " << t.amount << endl;
+        }
+    }
+};
+
+int main() {
+
+    Account user1(101, "Rahul", 5000);
+    Account user2(102, "Amit", 3000);
+
+    int choice;
+    float amount;
+
+    do {
+        cout << "\n===== Banking System =====\n";
+        cout << "1. Deposit\n";
+        cout << "2. Withdraw\n";
+        cout << "3. Transfer\n";
+        cout << "4. Show Account Details\n";
+        cout << "5. Show Transactions\n";
+        cout << "6. Exit\n";
+
+        cout << "Enter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+
+            case 1:
+                cout << "Enter Amount: ";
+                cin >> amount;
+                user1.deposit(amount);
+                break;
+
+            case 2:
+                cout << "Enter Amount: ";
+                cin >> amount;
+                user1.withdraw(amount);
+                break;
+
+            case 3:
+                cout << "Enter Amount: ";
+                cin >> amount;
+                user1.transfer(user2, amount);
+                break;
+
+            case 4:
+                user1.showDetails();
+                break;
+
+            case 5:
+                user1.showTransactions();
+                break;
+
+            case 6:
+                cout << "Thank You!\n";
+                break;
+
+            default:
+                cout << "Invalid Choice!\n";
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
