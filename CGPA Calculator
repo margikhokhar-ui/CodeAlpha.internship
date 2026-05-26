@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+class Course {
+public:
+    string name;
+    float grade;
+    int credit;
+};
+
+int main() {
+
+    int n;
+    float totalCredits = 0;
+    float totalGradePoints = 0;
+    float semesterGPA, overallCGPA;
+
+    cout << "=========== CGPA CALCULATOR ===========\n";
+
+    // Take input for number of courses
+    cout << "Enter Number of Courses: ";
+    cin >> n;
+
+    vector<Course> courses(n);
+
+    // Input course details
+    for(int i = 0; i < n; i++) {
+
+        cout << "\nEnter Details of Course " << i + 1 << endl;
+
+        cout << "Course Name: ";
+        cin >> courses[i].name;
+
+        cout << "Enter Grade Point: ";
+        cin >> courses[i].grade;
+
+        cout << "Enter Credit Hours: ";
+        cin >> courses[i].credit;
+
+        // Calculate total credits
+        totalCredits += courses[i].credit;
+
+        // Calculate total grade points
+        totalGradePoints += courses[i].grade * courses[i].credit;
+    }
+
+    // Semester GPA
+    semesterGPA = totalGradePoints / totalCredits;
+
+    // Overall CGPA
+    // (For single semester project, CGPA = GPA)
+    overallCGPA = semesterGPA;
+
+    // Display all course grades
+    cout << "\n=========== COURSE DETAILS ===========\n";
+
+    cout << left << setw(15) << "Course"
+         << setw(15) << "Grade"
+         << setw(15) << "Credits"
+         << setw(15) << "Grade Points" << endl;
+
+    for(int i = 0; i < n; i++) {
+
+        float gradePoint = courses[i].grade * courses[i].credit;
+
+        cout << left << setw(15) << courses[i].name
+             << setw(15) << courses[i].grade
+             << setw(15) << courses[i].credit
+             << setw(15) << gradePoint << endl;
+    }
+
+    // Final Results
+    cout << "\n=========== FINAL RESULT ===========\n";
+
+    cout << "Total Credits       : " << totalCredits << endl;
+    cout << "Total Grade Points  : " << totalGradePoints << endl;
+
+    cout << fixed << setprecision(2);
+
+    cout << "Semester GPA        : " << semesterGPA << endl;
+    cout << "Overall CGPA        : " << overallCGPA << endl;
+
+    cout << "\nCGPA Calculation Completed Successfully!\n";
+
+    return 0;
+}
